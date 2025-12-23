@@ -166,14 +166,14 @@ static const Key keys[] = {
      XK_x,                xrdb,          {.v = NULL}}, /* refresh xrdb colors */
     {MODKEY,              XK_t,          setlayout,      {.v = &layouts[0]}},
     {MODKEY,              XK_f,          togglefullscreen,{0}}, /* fullscreen */
-    {MODKEY | ShiftMask,  XK_m,          setlayout,      {.v = &layouts[2]}}, /* monocle */
+    {MODKEY | ControlMask,  XK_m,          setlayout,      {.v = &layouts[2]}}, /* monocle */
     {MODKEY,              XK_s,          setlayout,      {.v = &layouts[3]}}, /* spiral */
     {MODKEY | ShiftMask,  XK_t,          setlayout,      {.v = &layouts[4]}}, /* dwindle */
     {MODKEY | ControlMask,XK_space,      setlayout,      {0}},
     {MODKEY | ShiftMask,  XK_space,      togglefloating, {0}},
     {MODKEY,              XK_space,      zoom,           {0}},
     {MODKEY | ControlMask,XK_space,      focusmaster,    {0}},
-    {MODKEY | ShiftMask,  XK_s,          togglesticky,   {0}},
+    {MODKEY | ControlMask | ShiftMask,  XK_s,          togglesticky,   {0}},
     /* multi-monitor control */
     {MODKEY,              XK_bracketright, focusmon,     {.i = -1}},
     {MODKEY | ShiftMask,  XK_bracketright, tagmon,       {.i = -1}},
@@ -182,25 +182,25 @@ static const Key keys[] = {
     /* gaps control */
     {MODKEY,              XK_g,      incrgaps,       {.i = -3}}, /* all */
     {MODKEY | ShiftMask,  XK_g,      incrgaps,       {.i = +3}},
-    {MODKEY | Mod1Mask,   XK_minus,          incrigaps,      {.i = +1}}, /* inner */
-    {MODKEY | Mod1Mask | ShiftMask,
-     XK_equal,                incrigaps,     {.i = -1}},
-    {MODKEY | Mod1Mask,   XK_o,          incrogaps,      {.i = +1}}, /* outer */
-    {MODKEY | Mod1Mask | ShiftMask,
-     XK_o,                incrogaps,     {.i = -1}},
-    {MODKEY | Mod1Mask,   XK_6,          incrihgaps,     {.i = +1}}, /* inner horiz */
-    {MODKEY | Mod1Mask | ShiftMask,
-     XK_6,                incrihgaps,    {.i = -1}},
-    {MODKEY | Mod1Mask,   XK_7,          incrivgaps,     {.i = +1}}, /* inner vert */
-    {MODKEY | Mod1Mask | ShiftMask,
-     XK_7,                incrivgaps,    {.i = -1}},
-    {MODKEY | Mod1Mask,   XK_8,          incrohgaps,     {.i = +1}}, /* outer horiz */
-    {MODKEY | Mod1Mask | ShiftMask,
-     XK_8,                incrohgaps,    {.i = -1}},
-    {MODKEY | Mod1Mask,   XK_9,          incrovgaps,     {.i = +1}}, /* outer vert */
-    {MODKEY | Mod1Mask | ShiftMask,
-     XK_9,                incrovgaps,    {.i = -1}},
-    {MODKEY | ShiftMask,  XK_equal,      togglegaps,     {0}},
+    //{MODKEY | Mod1Mask,   XK_minus,          incrigaps,      {.i = +1}}, /* inner */
+    //{MODKEY | Mod1Mask | ShiftMask,
+    // XK_equal,                incrigaps,     {.i = -1}},
+    //{MODKEY | Mod1Mask,   XK_o,          incrogaps,      {.i = +1}}, /* outer */
+    //{MODKEY | Mod1Mask | ShiftMask,
+   //  XK_o,                incrogaps,     {.i = -1}},
+   // {MODKEY | Mod1Mask,   XK_6,          incrihgaps,     {.i = +1}}, /* inner horiz */
+   // {MODKEY | Mod1Mask | ShiftMask,
+   //  XK_6,                incrihgaps,    {.i = -1}},
+   // {MODKEY | Mod1Mask,   XK_7,          incrivgaps,     {.i = +1}}, /* inner vert */
+   // {MODKEY | Mod1Mask | ShiftMask,
+   //  XK_7,                incrivgaps,    {.i = -1}},
+   // {MODKEY | Mod1Mask,   XK_8,          incrohgaps,     {.i = +1}}, /* outer horiz */
+   // {MODKEY | Mod1Mask | ShiftMask,
+   //  XK_8,                incrohgaps,    {.i = -1}},
+   // {MODKEY | Mod1Mask,   XK_9,          incrovgaps,     {.i = +1}}, /* outer vert */
+  //  {MODKEY | Mod1Mask | ShiftMask,
+  //   XK_9,                incrovgaps,    {.i = -1}},
+    {MODKEY | ShiftMask,  XK_plus,      togglegaps,     {0}},
     {MODKEY | ShiftMask,  XK_minus,      defaultgaps,    {0}},
     /* tag keys */
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
@@ -215,34 +215,22 @@ static const Key keys[] = {
     {MODKEY | ControlMask, XK_r, togglebarlt,     {0}},
     {MODKEY | ControlMask, XK_f, togglebarfloat,  {0}},
     /* application bindings */
-    {MODKEY,              XK_m, spawn, {.v = (const char *[]) {"st", "-e", "ncspot", NULL}}},
+    {MODKEY | ShiftMask,  XK_m, spawn, {.v = (const char *[]) {"kitty", "-e", "nmtui", NULL}}}, // NETWORK MANAGER
+    {MODKEY,              XK_m, spawn, {.v = (const char *[]) {"kitty", "-e", "rmpc", NULL}}},
     {MODKEY,              XK_b, spawn, {.v = (const char *[]) {BROWSER, NULL}}},
     {MODKEY | ShiftMask,
      XK_f,                spawn, {.v = (const char *[]) {"nautilus", NULL}}},
-    {MODKEY,              XK_n, spawn, {.v = (const char *[]) {"st", "-e", "nvim", NULL}}},
-    //{MODKEY,              XK_e, spawn, {.v = (const char *[]) {"/home/atego/.local/bin/emacs-launcher", NULL}}},
-    //{MODKEY | ShiftMask,
-     //XK_h,                spawn, {.v = (const char *[]) {"st", "-e", "htop", NULL}}},
-    //{MODKEY | ShiftMask,  XK_p, spawn, SHCMD("toggle-transparency")},
-    /* script launch bindings */
-    //{MODKEY | ShiftMask,
-     //XK_n,                spawn, {.v = (const char *[]) {"dmenunotes", NULL}}},
+    {MODKEY,              XK_n, spawn, {.v = (const char *[]) {"kitty", "-e", "nvim", NULL}}},
+    {MODKEY,              XK_e, spawn, {.v = (const char *[]) {"/home/atego/.local/bin/emacs-launcher", NULL}}},
     {MODKEY | ShiftMask,
-     XK_y,                spawn, {.v = (const char *[]) {"/home/atego/.config/scripts/ytplay-launcher", NULL}}},
-    {MODKEY,
-     XK_v,                spawn, {.v = (const char *[]) {"/home/atego/.config/scripts/shortcuts-menus/cliphist", NULL}}},
-    {MODKEY,
-     XK_c,                spawn, {.v = (const char *[]) {"/bin/cliphist", "store", NULL}}},
-    {MODKEY | ShiftMask,
-     XK_a,                spawn, {.v = (const char *[]) {"dmenuvids", NULL}}},
+     XK_y,                spawn, {.v = (const char *[]) {"/home/atego/.config/scripts/ytplay-launcher", NULL}}}, 
     {MODKEY | ControlMask,
      XK_a,                spawn, {.v = (const char *[]) {"dmenuaudioswitch", NULL}}},
     {MODKEY | ShiftMask,
      XK_r,                spawn, {.v = (const char *[]) {"/home/atego/.config/scripts/screenrecord", "toggle", NULL}}},
     {MODKEY | ShiftMask,
      XK_grave,            spawn, {.v = (const char *[]) {"define", NULL}}},
-    {MODKEY | ShiftMask,  XK_w, spawn,
-     SHCMD("/home/atego/.config/scripts/images-photos-wallpapers/fzfub-wallpapermenu")},
+    {MODKEY | ShiftMask,  XK_w, spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/.config/wal/wal-picker.sh", NULL}}},
     /* ThinkPad media keys (F1-F4): F1=mute, F2=vol-, F3=vol+, F4=mic-mute */
     {0, XF86XK_AudioMute,        spawn, SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle")},
     {0, XF86XK_AudioLowerVolume, spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%")},
@@ -252,7 +240,7 @@ static const Key keys[] = {
     {0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +1%")},
     {0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 1%-")},
     /* screenshot binds */
-    {MODKEY | ShiftMask, XK_s,   spawn, SHCMD("screenshot")},
+    {MODKEY | ShiftMask, XK_s,   spawn, {.v = (const char *[]) {"/home/atego/.config/wal/screenshot-minimal.sh", NULL}}},
     {MODKEY | ShiftMask, XK_F1,  spawn, SHCMD("screenshot")},
     {MODKEY | ShiftMask, XK_F2,  spawn, SHCMD("screenshot color")},
     {MODKEY | ShiftMask,
@@ -260,7 +248,7 @@ static const Key keys[] = {
     {MODKEY,             XK_F2,  spawn, {.v = (const char *[]) {"vb", NULL}}},
     {MODKEY | ShiftMask,
      XK_F2,              spawn, {.v = (const char *[]) {"dmenutemp", NULL}}},
-    /* other bindings */
+    /* Music keybinds */
     //{MODKEY,             XK_F12,      spawn, SHCMD("playerctl -p termusic next")},
     //{MODKEY,             XK_F11,      spawn, SHCMD("playerctl -p termusic play-pause")},
     //{MODKEY | ShiftMask, XK_F11,      spawn, SHCMD("playerctl play-pause")},
