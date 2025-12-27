@@ -1,7 +1,6 @@
 /* appearance */
-
 static unsigned int borderpx = 1;      /* border pixel of windows */
-static unsigned int snap = 32;         /* snap pixel */
+static unsigned int snap = 5;         /* snap pixel */
 static const unsigned int gappih = 20; /* horiz inner gap between windows */
 static const unsigned int gappiv = 20; /* vert inner gap between windows */
 static const unsigned int gappoh =
@@ -80,16 +79,19 @@ static const int lockfullscreen =
 static const Layout layouts[] = {
     /* alt glyphs: 󱡗 󱏋 */
     /* symbol     arrange function */
-    {"λ",   tile},    /* first entry is default */
+    {"",   tile},    /* first entry is default */
     {"󰇥", NULL},      /* no layout function means floating behavior */
     {"", monocle},
     {"󰫣", spiral},
     {"󰫥", dwindle},
+    {"λ",   tile}, // BACKUP OF FIRST TILE, SWAPPED FOR GALAXY
+    {"",   tile},  // BACKUP 2
 };
 
 /* key definitions */
 
 #define MODKEY Mod4Mask // windows key
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } } // DEFINES FOR $HOME COMAND
 #define TAGKEYS(KEY, TAG)                                                      \
   {MODKEY, KEY, view, {.ui = 1 << TAG}},                                       \
       {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},               \
@@ -105,13 +107,13 @@ static const Layout layouts[] = {
                         { MOD, XK_a,     ACTION##stack, {.i = 1 } },           \
                         { MOD, XK_z,     ACTION##stack, {.i = 2 } },           \
                         { MOD, XK_x,     ACTION##stack, {.i = -1 } }, */
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
-
-#define SHCMD(cmd)                                                             \
-  {                                                                            \
-    .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
-  }
-/* helper for launching gtk application */
+//* helper for spawning shell commands in the pre dwm-5.0 fashion */
+//
+//#define SHCMD(cmd)                                                             \
+//  {                                                                            \
+//    .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
+//  }
+//* helper for launching gtk application */
 
 #define GTKCMD(cmd)                                                            \
   {                                                                            \
@@ -119,6 +121,7 @@ static const Layout layouts[] = {
   }
 #define STATUSBAR "dwmblocks"
 #define BROWSER   "helium-browser"
+#define CHATCLIENT "discord"
 
 /* commands */
 
@@ -145,118 +148,96 @@ static const Arg tagexec[] = {
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
-    {MODKEY,              XK_p,           spawn,          {.v = dmenucmd}},
-    {MODKEY,              XK_Return,      spawn,          {.v = termcmd}},
-    {MODKEY | ShiftMask,  XK_b,           togglebar,      {0}},
+    {MODKEY,              XK_p,          spawn,            {.v = dmenucmd}},
+    {MODKEY,              XK_Return,     spawn,            {.v = termcmd}},
+    {MODKEY | ControlMask,  XK_b,        togglebar,        {0}},
     STACKKEYS(MODKEY, focus) STACKKEYS(MODKEY | ShiftMask, push)
-    {MODKEY | ShiftMask,  XK_i,           incnmaster,     {.i = +1}}, /* more masters */
-    {MODKEY | ControlMask,XK_i,           incnmaster,     {.i = -1}}, /* fewer masters */
-    {MODKEY,              XK_h,           setmfact,       {.f = -0.05}},
-    {MODKEY,              XK_l,           setmfact,       {.f = +0.05}},
-    {MODKEY,              XK_Tab,        view,           {0}},
-    {MODKEY,              XK_0,          view,           {.ui = ~0}},
-    {MODKEY | ShiftMask,  XK_0,          tag,            {.ui = ~0}},
-    {MODKEY | ControlMask | ShiftMask,
-     XK_q,                quit,          {1}}, /* refresh dwm (restartsig) */
-    {MODKEY | ShiftMask,  XK_BackSpace,  quit,           {0}}, /* quit dwm */
-    {MODKEY,              XK_q,          killclient,     {0}}, /* quit window */
-    {MODKEY | ShiftMask,  XK_q,          killclient,     {.ui = 1}}, /* kill others */
-    /* { MODKEY|ShiftMask|ControlMask,  XK_q,  killclient,     {.ui = 2} }, */
-    {MODKEY | ControlMask,
-     XK_x,                xrdb,          {.v = NULL}}, /* refresh xrdb colors */
-    {MODKEY,              XK_t,          setlayout,      {.v = &layouts[0]}},
-    {MODKEY,              XK_f,          togglefullscreen,{0}}, /* fullscreen */
-    {MODKEY | ControlMask,  XK_m,          setlayout,      {.v = &layouts[2]}}, /* monocle */
-    {MODKEY,              XK_s,          setlayout,      {.v = &layouts[3]}}, /* spiral */
-    {MODKEY | ShiftMask,  XK_t,          setlayout,      {.v = &layouts[4]}}, /* dwindle */
-    {MODKEY | ControlMask,XK_space,      setlayout,      {0}},
-    {MODKEY | ShiftMask,  XK_space,      togglefloating, {0}},
-    {MODKEY,              XK_space,      zoom,           {0}},
-    {MODKEY | ControlMask,XK_space,      focusmaster,    {0}},
-    {MODKEY | ControlMask | ShiftMask,  XK_s,          togglesticky,   {0}},
+    {MODKEY | ShiftMask,  XK_i,          incnmaster,       {.i = +1}}, /* more masters */
+    {MODKEY | ControlMask,XK_i,          incnmaster,       {.i = -1}}, /* fewer masters */
+    {MODKEY,              XK_h,          setmfact,         {.f = -0.05}},
+    {MODKEY,              XK_l,          setmfact,         {.f = +0.05}},
+    {MODKEY,              XK_Tab,        view,             {0}},
+    {MODKEY,              XK_0,          view,             {.ui = ~0}},
+    {MODKEY | ShiftMask,  XK_0,          tag,              {.ui = ~0}},
+    {MODKEY | ControlMask | ShiftMask, XK_q, quit,         {1}}, /* refresh dwm (restartsig) */
+    {MODKEY | ShiftMask,  XK_BackSpace,  quit,             {0}}, /* quit dwm */
+    {MODKEY,              XK_q,          killclient,       {0}}, /* quit window */
+    {MODKEY | ShiftMask,  XK_q,          killclient,       {.ui = 1}}, /* kill others */
+    /* { MODKEY|ShiftMask|ControlMask,  XK_q,  killclient, {.ui = 2} }, */
+    {MODKEY | ControlMask,XK_x,          xrdb,             {.v = NULL}}, /* refresh xrdb colors */
+    {MODKEY,              XK_t,          setlayout,        {.v = &layouts[0]}},
+    {MODKEY,              XK_f,          togglefullscreen, {0}}, /* fullscreen */
+    {MODKEY | ControlMask | ShiftMask,  XK_m, setlayout,   {.v = &layouts[2]}}, /* monocle */
+    {MODKEY | ControlMask | ShiftMask,  XK_t, setlayout,   {.v = &layouts[3]}}, /* spiral */
+    {MODKEY | ShiftMask,  XK_t,          setlayout,        {.v = &layouts[4]}}, /* dwindle */
+    {MODKEY | ControlMask,XK_space,      setlayout,        {0}},
+    {MODKEY | ShiftMask,  XK_space,      togglefloating,   {0}},
+    {MODKEY,              XK_space,      zoom,             {0}},
+    {MODKEY | ControlMask,XK_space,      focusmaster,      {0}},
+    {MODKEY,              XK_s,          togglesticky, {0}},
     /* multi-monitor control */
-    {MODKEY,              XK_bracketright, focusmon,     {.i = -1}},
-    {MODKEY | ShiftMask,  XK_bracketright, tagmon,       {.i = -1}},
-    {MODKEY,              XK_bracketleft,  focusmon,     {.i = +1}},
-    {MODKEY | ShiftMask,  XK_bracketleft,  tagmon,       {.i = +1}},
+    {MODKEY,              XK_bracketright, focusmon, {.i = -1}},
+    {MODKEY | ShiftMask,  XK_bracketright, tagmon,   {.i = -1}},
+    {MODKEY,              XK_bracketleft, focusmon,  {.i = +1}},
+    {MODKEY | ShiftMask,            XK_bracketleft, tagmon,    {.i = +1}},
     /* gaps control */
-    {MODKEY,              XK_g,      incrgaps,       {.i = -3}}, /* all */
-    {MODKEY | ShiftMask,  XK_g,      incrgaps,       {.i = +3}},
-    //{MODKEY | Mod1Mask,   XK_minus,          incrigaps,      {.i = +1}}, /* inner */
-    //{MODKEY | Mod1Mask | ShiftMask,
-    // XK_equal,                incrigaps,     {.i = -1}},
-    //{MODKEY | Mod1Mask,   XK_o,          incrogaps,      {.i = +1}}, /* outer */
-    //{MODKEY | Mod1Mask | ShiftMask,
-   //  XK_o,                incrogaps,     {.i = -1}},
-   // {MODKEY | Mod1Mask,   XK_6,          incrihgaps,     {.i = +1}}, /* inner horiz */
-   // {MODKEY | Mod1Mask | ShiftMask,
-   //  XK_6,                incrihgaps,    {.i = -1}},
-   // {MODKEY | Mod1Mask,   XK_7,          incrivgaps,     {.i = +1}}, /* inner vert */
-   // {MODKEY | Mod1Mask | ShiftMask,
-   //  XK_7,                incrivgaps,    {.i = -1}},
-   // {MODKEY | Mod1Mask,   XK_8,          incrohgaps,     {.i = +1}}, /* outer horiz */
-   // {MODKEY | Mod1Mask | ShiftMask,
-   //  XK_8,                incrohgaps,    {.i = -1}},
-   // {MODKEY | Mod1Mask,   XK_9,          incrovgaps,     {.i = +1}}, /* outer vert */
-  //  {MODKEY | Mod1Mask | ShiftMask,
-  //   XK_9,                incrovgaps,    {.i = -1}},
-    {MODKEY | ShiftMask,  XK_plus,      togglegaps,     {0}},
-    {MODKEY | ShiftMask,  XK_minus,      defaultgaps,    {0}},
+    {MODKEY,                        XK_g,     incrgaps,       {.i = -3}}, /* all */
+    {MODKEY | ShiftMask,            XK_g,     incrgaps,       {.i = +3}},
+   // {MODKEY | Mod1Mask,             XK_minus, incrigaps,      {.i = +1}}, /* inner */
+   // {MODKEY | Mod1Mask | ShiftMask, XK_equal, incrigaps,      {.i = -1}},
+   // {MODKEY | Mod1Mask,             XK_o,     incrogaps,      {.i = +1}}, /* outer */
+   // {MODKEY | Mod1Mask | ShiftMask, XK_o,     incrogaps,      {.i = -1}},
+   // {MODKEY | Mod1Mask,             XK_6,     incrihgaps,     {.i = +1}}, /* inner horiz */
+   // {MODKEY | Mod1Mask | ShiftMask, XK_6,     incrihgaps,     {.i = -1}},
+   // {MODKEY | Mod1Mask,             XK_7,     incrivgaps,     {.i = +1}}, /* inner vert */
+   // {MODKEY | Mod1Mask | ShiftMask, XK_7,     incrivgaps,     {.i = -1}},
+   // {MODKEY | Mod1Mask,             XK_8,     incrohgaps,     {.i = +1}}, /* outer horiz */
+   // {MODKEY | Mod1Mask | ShiftMask, XK_8,     incrohgaps,     {.i = -1}},
+   // {MODKEY | Mod1Mask,             XK_9,     incrovgaps,     {.i = +1}}, /* outer vert */
+   // {MODKEY | Mod1Mask | ShiftMask, XK_9,     incrovgaps,     {.i = -1}},
+   // {MODKEY | ShiftMask,            XK_plus,  togglegaps,     {0}},
+   // {MODKEY | ShiftMask,            XK_minus, defaultgaps,    {0}},
     /* tag keys */
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
             TAGKEYS(XK_9, 8)
     /* toggle statusbar pieces individually */
-    {MODKEY | ControlMask, XK_t, togglebartitle,  {0}},
-    {MODKEY | ControlMask, XK_s, togglebarstatus, {0}},
-    {MODKEY | ControlMask, XK_t, togglebartags,   {0}},
-    {MODKEY | ControlMask,
-     XK_e,                  togglebarcolor,       {0}}, /* swaps fg/bg */
-    {MODKEY | ControlMask, XK_r, togglebarlt,     {0}},
-    {MODKEY | ControlMask, XK_f, togglebarfloat,  {0}},
+    //{MODKEY | ControlMask,  XK_t,     togglebartitle,  {0}},  // NEVER UNCOMENT CRUCIAL FOR NAVIGATION
+    {MODKEY | ControlMask,  XK_t,     togglebarstatus, {0}},
+    //{MODKEY | ControlMask,  XK_t,     togglebartags,   {0}},  // NEVER UNCOMENT CRUCIAL FOR NAVIGATION
+    {MODKEY | ControlMask,  XK_e,     togglebarcolor,  {0}}, /* swaps fg/bg */
+    //{MODKEY | ControlMask,  XK_r,     togglebarlt,     {0}},  // NEVER UNCOMENT CRUCIAL LOOKS!
+    {MODKEY | ControlMask,  XK_f,     togglebarfloat,  {0}},
     /* application bindings */
-    {MODKEY | ShiftMask,  XK_m, spawn, {.v = (const char *[]) {"kitty", "-e", "nmtui", NULL}}}, // NETWORK MANAGER
-    {MODKEY,              XK_m, spawn, {.v = (const char *[]) {"kitty", "-e", "rmpc", NULL}}},
-    {MODKEY,              XK_b, spawn, {.v = (const char *[]) {BROWSER, NULL}}},
-    {MODKEY | ShiftMask,
-     XK_f,                spawn, {.v = (const char *[]) {"nautilus", NULL}}},
-    {MODKEY,              XK_n, spawn, {.v = (const char *[]) {"kitty", "-e", "nvim", NULL}}},
-    {MODKEY,              XK_e, spawn, {.v = (const char *[]) {"/home/atego/.local/bin/emacs-launcher", NULL}}},
-    {MODKEY | ShiftMask,
-     XK_y,                spawn, {.v = (const char *[]) {"/home/atego/.config/scripts/ytplay-launcher", NULL}}}, 
-    {MODKEY | ControlMask,
-     XK_a,                spawn, {.v = (const char *[]) {"dmenuaudioswitch", NULL}}},
-    {MODKEY | ShiftMask,
-     XK_r,                spawn, {.v = (const char *[]) {"/home/atego/.config/scripts/screenrecord", "toggle", NULL}}},
-    {MODKEY | ShiftMask,
-     XK_grave,            spawn, {.v = (const char *[]) {"define", NULL}}},
-    {MODKEY | ShiftMask,  XK_w, spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/.config/wal/wal-picker.sh", NULL}}},
+    {MODKEY | ShiftMask,    XK_m,     spawn, {.v = (const char *[]) {"kitty", "-e", "nmtui", NULL}}}, // NETWORK MANAGER
+    {MODKEY,                XK_m,     spawn, {.v = (const char *[]) {"kitty", "-e", "rmpc", NULL}}}, // MUSIC PLAYER
+    {MODKEY | ControlMask,  XK_m,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/app-players/movplayer", NULL}}}, // MOVIE PLAYER
+    {MODKEY,                XK_a,     spawn, {.v = (const char *[]) {"kitty", "-e", "sh", "-c", "ani-cli --dub --skip", NULL}}}, // ANIME PLAYER
+    {MODKEY,                XK_b,     spawn, {.v = (const char *[]) {BROWSER, NULL}}}, // BROWSER
+    {MODKEY,                XK_d,     spawn, {.v = (const char *[]) {CHATCLIENT, NULL}}}, // DISCORD
+    {MODKEY | ShiftMask,    XK_f,     spawn, {.v = (const char *[]) {"nautilus", NULL}}}, // nautilus
+    {MODKEY | ShiftMask,    XK_b,     spawn, {.v = (const char *[]) {"kitty", "-e", "btop", NULL}}}, // STATISTICS SCREEN
+    {MODKEY,                XK_c,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cal-check", NULL}}}, // MANUALY CHECK CALLENDAR FOR TODAY AND TMRW
+    {MODKEY,                XK_n,     spawn, {.v = (const char *[]) {"kitty", "-e", "nvim", NULL}}}, // NVIM
+    {MODKEY | ShiftMask,    XK_n,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/notes.sh", NULL}}}, // NOTES
+    {MODKEY,                XK_e,     spawn, {.v = (const char *[]) {"/home/atego/.local/bin/emacs-launcher", NULL}}}, // EMACS
+    {MODKEY,                XK_y,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/app-players/ytplay-launcher", NULL}}},  // YOUTUBE PLAYER
+    {MODKEY | ControlMask,  XK_a,     spawn, {.v = (const char *[]) {"dmenuaudioswitch", NULL}}}, // IDK
+    {MODKEY | ShiftMask,    XK_r,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/audio-video/screenrecord", "toggle", NULL}}}, // SCREEN RECORD
+    {MODKEY | ShiftMask,    XK_grave, spawn, {.v = (const char *[]) {"define", NULL}}}, // IDK
+    {MODKEY | ShiftMask,    XK_w,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/images-photos-wallpapers/wal-picker.sh", NULL}}}, // WALLPAPER PICKER
     /* ThinkPad media keys (F1-F4): F1=mute, F2=vol-, F3=vol+, F4=mic-mute */
-    {0, XF86XK_AudioMute,        spawn, SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle")},
-    {0, XF86XK_AudioLowerVolume, spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%")},
-    {0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5%")},
-    {0, XF86XK_AudioMicMute,     spawn, SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle")},
+    {0, XF86XK_AudioMute,             spawn, SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle")},
+    {0, XF86XK_AudioLowerVolume,      spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%")},
+    {0, XF86XK_AudioRaiseVolume,      spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5%")},
+    {0, XF86XK_AudioMicMute,          spawn, SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle")},
     /* brightness keys */
-    {0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +1%")},
-    {0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 1%-")},
+    {0, XF86XK_MonBrightnessUp,       spawn, SHCMD("brightnessctl set +1%")},
+    {0, XF86XK_MonBrightnessDown,     spawn, SHCMD("brightnessctl set 1%-")},
     /* screenshot binds */
-    {MODKEY | ShiftMask, XK_s,   spawn, {.v = (const char *[]) {"/home/atego/.config/wal/screenshot-minimal.sh", NULL}}},
-    {MODKEY | ShiftMask, XK_F1,  spawn, SHCMD("screenshot")},
-    {MODKEY | ShiftMask, XK_F2,  spawn, SHCMD("screenshot color")},
-    {MODKEY | ShiftMask,
-     XK_F3,              spawn, {.v = (const char *[]) {"phototransfer", NULL}}},
-    {MODKEY,             XK_F2,  spawn, {.v = (const char *[]) {"vb", NULL}}},
-    {MODKEY | ShiftMask,
-     XK_F2,              spawn, {.v = (const char *[]) {"dmenutemp", NULL}}},
-    /* Music keybinds */
-    //{MODKEY,             XK_F12,      spawn, SHCMD("playerctl -p termusic next")},
-    //{MODKEY,             XK_F11,      spawn, SHCMD("playerctl -p termusic play-pause")},
-    //{MODKEY | ShiftMask, XK_F11,      spawn, SHCMD("playerctl play-pause")},
-    //{MODKEY,             XK_F10,      spawn, SHCMD("playerctl -p termusic previous")},
-    //{MODKEY | ShiftMask, XK_backslash,spawn, SHCMD("slock systemctl suspend -i")},
-    //{MODKEY,             XK_backslash,spawn, SHCMD("slock")},
-    //{MODKEY,             XK_F7,       spawn, SHCMD("status-timer")},
-    //{MODKEY | ShiftMask, XK_F7,       spawn, SHCMD("status-timer cleanup")},
+    {MODKEY | ShiftMask,               XK_s,  spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/images-photos-wallpapers/screenshot-minimal.sh", NULL}}}, // SCREENSHOT
+    {MODKEY | ControlMask,             XK_s,  spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/images-photos-wallpapers/screenshot.sh", NULL}}}, // SPECIFIC SCREENSHOT
+    {MODKEY | ControlMask | ShiftMask, XK_s,  spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/images-photos-wallpapers/screenshot.sh", "color", NULL}}}, //COLOR PICKER
 };
 
 /* button definitions */
