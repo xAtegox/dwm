@@ -61,6 +61,7 @@ static const Rule rules[] = {
     {"mpv",    NULL, NULL,        0, 1, 0, 1, -1},     /* mpv video player */
     {"Nsxiv",  NULL, NULL,        0, 1, 0, 1, -1},     /* nsxiv image preview */
     {NULL,      NULL, "Event Tester", 0, 0, 0, 1, -1}, /* xev */
+    { "floating_calc", NULL,      NULL,       0,            1,           -1 },
 };
 
 #include "vanitygaps.c"
@@ -215,9 +216,12 @@ static const Key keys[] = {
     {MODKEY,                XK_a,     spawn, {.v = (const char *[]) {"kitty", "-e", "sh", "-c", "ani-cli --dub --skip", NULL}}}, // ANIME PLAYER
     {MODKEY,                XK_b,     spawn, {.v = (const char *[]) {BROWSER, NULL}}}, // BROWSER
     {MODKEY,                XK_d,     spawn, {.v = (const char *[]) {CHATCLIENT, NULL}}}, // DISCORD
+    {MODKEY | ShiftMask,    XK_d,     spawn, {.v = (const char *[]) {"/bin/bash", "/home/atego/dotfiles/scripts/.config/scripts/app-players/yt-music-tool", NULL}}}, // MUSIC DOWNLOADER
     {MODKEY | ShiftMask,    XK_f,     spawn, {.v = (const char *[]) {"nautilus", NULL}}}, // nautilus
     {MODKEY | ShiftMask,    XK_b,     spawn, {.v = (const char *[]) {"kitty", "-e", "btop", NULL}}}, // STATISTICS SCREEN
-    {MODKEY,                XK_c,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cal-check", NULL}}}, // MANUALY CHECK CALLENDAR FOR TODAY AND TMRW
+    {MODKEY,                XK_c,     spawn, {.v = (const char *[]) {"kitty", "--class", "floating_calc", "--title", "Calculator", "--override", "initial_window_width=800", "--override", "initial_window_height=450", "-e", "/home/atego/dotfiles/scripts/.config/scripts/app-players/calculator.py", NULL}}}, // CALCULATOR
+    {MODKEY | ControlMask,                XK_c,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cal-check", NULL}}}, // MANUALY CHECK CALLENDAR FOR TODAY AND TMRW
+    {MODKEY | ShiftMask,    XK_c,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cheat.sh", NULL}}}, // COMAND CHEAT SHEET
     {MODKEY,                XK_n,     spawn, {.v = (const char *[]) {"kitty", "-e", "nvim", NULL}}}, // NVIM
     {MODKEY | ShiftMask,    XK_n,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/notes.sh", NULL}}}, // NOTES
     {MODKEY,                XK_e,     spawn, {.v = (const char *[]) {"/home/atego/.local/bin/emacs-launcher", NULL}}}, // EMACS
