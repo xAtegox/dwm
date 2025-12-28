@@ -157,7 +157,7 @@ static const Key keys[] = {
     {MODKEY | ShiftMask,  XK_i,          incnmaster,       {.i = +1}}, /* more masters */
     {MODKEY | ControlMask,XK_i,          incnmaster,       {.i = -1}}, /* fewer masters */
     {MODKEY,              XK_h,          setmfact,         {.f = -0.05}},
-    {MODKEY | ShiftMask,  XK_l,          setmfact,         {.f = +0.05}},
+    {MODKEY | ShiftMask,  XK_h,          setmfact,         {.f = +0.05}},
     {MODKEY,              XK_Tab,        view,             {0}},
     {MODKEY,              XK_0,          view,             {.ui = ~0}},
     {MODKEY | ShiftMask,  XK_0,          tag,              {.ui = ~0}},
@@ -169,9 +169,9 @@ static const Key keys[] = {
     {MODKEY | ControlMask,XK_x,          xrdb,             {.v = NULL}}, /* refresh xrdb colors */
     {MODKEY,              XK_t,          setlayout,        {.v = &layouts[0]}},
     {MODKEY,              XK_f,          togglefullscreen, {0}}, /* fullscreen */
-    {MODKEY | ControlMask | ShiftMask,  XK_m, setlayout,   {.v = &layouts[2]}}, /* monocle */
-    {MODKEY | ControlMask | ShiftMask,  XK_t, setlayout,   {.v = &layouts[3]}}, /* spiral */
-    {MODKEY | ShiftMask,  XK_t,          setlayout,        {.v = &layouts[4]}}, /* dwindle */
+    //{MODKEY | ControlMask | ShiftMask,  XK_m, setlayout,   {.v = &layouts[2]}}, /* monocle */
+    //{MODKEY | ControlMask | ShiftMask,  XK_t, setlayout,   {.v = &layouts[3]}}, /* spiral */
+    //{MODKEY | ShiftMask,  XK_t,          setlayout,        {.v = &layouts[4]}}, /* dwindle */
     {MODKEY | ControlMask,XK_space,      setlayout,        {0}},
     {MODKEY | ShiftMask,  XK_space,      togglefloating,   {0}},
     {MODKEY,              XK_space,      zoom,             {0}},
@@ -214,14 +214,18 @@ static const Key keys[] = {
     {MODKEY | ShiftMask,    XK_m,     spawn, {.v = (const char *[]) {"kitty", "-e", "nmtui", NULL}}}, // NETWORK MANAGER
     {MODKEY,                XK_m,     spawn, {.v = (const char *[]) {"kitty", "-e", "rmpc", NULL}}}, // MUSIC PLAYER
     {MODKEY | ControlMask,  XK_m,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/app-players/movplayer", NULL}}}, // MOVIE PLAYER
+    {MODKEY | ControlMask | ShiftMask, XK_m, spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/app-players/movie-installer", NULL}}}, // MOVIE INSTALLER
     {MODKEY,                XK_a,     spawn, {.v = (const char *[]) {"kitty", "-e", "sh", "-c", "ani-cli --dub --skip", NULL}}}, // ANIME PLAYER
     {MODKEY,                XK_b,     spawn, {.v = (const char *[]) {BROWSER, NULL}}}, // BROWSER
     {MODKEY,                XK_d,     spawn, {.v = (const char *[]) {CHATCLIENT, NULL}}}, // DISCORD
     {MODKEY | ShiftMask,    XK_d,     spawn, {.v = (const char *[]) {"/bin/bash", "/home/atego/dotfiles/scripts/.config/scripts/app-players/yt-music-tool", NULL}}}, // MUSIC DOWNLOADER
     {MODKEY | ShiftMask,    XK_f,     spawn, {.v = (const char *[]) {"nautilus", NULL}}}, // nautilus
     {MODKEY | ShiftMask,    XK_b,     spawn, {.v = (const char *[]) {"kitty", "-e", "btop", NULL}}}, // STATISTICS SCREEN
-    {MODKEY,                XK_l,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/layout/study.sh", NULL}}}, // LAYOUT PICKER
+    {MODKEY,                XK_l,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/layout/study.sh", NULL}}}, // Study LAYOUT
+    {MODKEY | ShiftMask,    XK_l,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/layout/chill.sh", NULL}}}, // Chill LAYOUT
+    {MODKEY | ControlMask,  XK_l,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/layout/music.sh", NULL}}}, // Music LAYOUT
     {MODKEY,                XK_c,     spawn, {.v = (const char *[]) {"kitty", "--class", "floating_calc", "--title", "Calculator", "--override", "initial_window_width=800", "--override", "initial_window_height=450", "-e", "/home/atego/dotfiles/scripts/.config/scripts/app-players/calculator.py", NULL}}}, // CALCULATOR
+    {MODKEY | ControlMask | ShiftMask, XK_c, spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/audio-video/selective-webm-convertion", NULL}}}, // CONVERT VIDEOS TO LOW QUALITY WEBM
     {MODKEY | ControlMask,  XK_c,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cal-check", NULL}}}, // MANUALY CHECK CALLENDAR FOR TODAY AND TMRW
     {MODKEY | ShiftMask,    XK_c,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cheat.sh", NULL}}}, // COMAND CHEAT SHEET
     {MODKEY,                XK_n,     spawn, {.v = (const char *[]) {"kitty", "-e", "nvim", NULL}}}, // NVIM
