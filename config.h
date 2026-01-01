@@ -18,10 +18,11 @@ static const int showlayout = 1;   /* 0 means no layout indicator */
 static const int showstatus = 1;   /* 0 means no status bar */
 static const int showfloating = 0; /* 0 means no floating indicator */
 static int topbar = 1;             /* 0 means bottom bar */
-static char dmenufont[] = "Iosevka Nerd Font:size=10";
+static char dmenufont[] = "Iosevka Nerd Font:size=12";
 static const char *fonts[] = {
-    "Iosevka Nerd Font:size=10",
-    "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true"};
+    "Iosevka Nerd Font:size=12",
+    "NotoColorEmoji:pixelsize=12:antialias=true:autohint=true"
+};
 
 /* default colors used if xrdb is not loaded */
 
@@ -176,7 +177,7 @@ static const Key keys[] = {
     {MODKEY | ShiftMask,  XK_space,      togglefloating,   {0}},
     {MODKEY,              XK_space,      zoom,             {0}},
     {MODKEY | ControlMask,XK_space,      focusmaster,      {0}},
-    {MODKEY,              XK_s,          togglesticky, {0}},
+    {MODKEY | ControlMask | ShiftMask, XK_s, togglesticky, {0}},
     /* multi-monitor control */
     {MODKEY,              XK_bracketright, focusmon, {.i = -1}},
     {MODKEY | ShiftMask,  XK_bracketright, tagmon,   {.i = -1}},
@@ -234,20 +235,19 @@ static const Key keys[] = {
     {MODKEY,                XK_y,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/app-players/ytplay-launcher", NULL}}},  // YOUTUBE PLAYER
     {MODKEY | ControlMask,  XK_a,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/audio-video/audiorecording", "toggle", NULL}}}, // AUDIO RECORDER
     {MODKEY | ShiftMask,    XK_r,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/audio-video/screenrecord", "toggle", NULL}}}, // SCREEN RECORD
-    {MODKEY | ShiftMask,    XK_grave, spawn, {.v = (const char *[]) {"define", NULL}}}, // IDK
+    {MODKEY,                XK_s,     spawn, {.v = (const char *[]) {"steam", NULL}}}, // STEAM
     {MODKEY | ShiftMask,    XK_w,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/images-photos-wallpapers/wal-picker.sh", NULL}}}, // WALLPAPER PICKER
     /* ThinkPad media keys (F1-F4): F1=mute, F2=vol-, F3=vol+, F4=mic-mute */
-    {0, XF86XK_AudioMute,             spawn, SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle")},
-    {0, XF86XK_AudioLowerVolume,      spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%")},
-    {0, XF86XK_AudioRaiseVolume,      spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5%")},
-    {0, XF86XK_AudioMicMute,          spawn, SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle")},
+    {0, XF86XK_AudioMute,             spawn, SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle; pkill -RTMIN+10 dwmblocks")},
+    {0, XF86XK_AudioLowerVolume,      spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%; pkill -RTMIN+10 dwmblocks")},
+    {0, XF86XK_AudioRaiseVolume,      spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5%; pkill -RTMIN+10 dwmblocks")},
+    {0, XF86XK_AudioMicMute,          spawn, SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle; pkill -RTMIN+10 dwmblocks")},
     /* brightness keys */
     {0, XF86XK_MonBrightnessUp,       spawn, SHCMD("brightnessctl set +1%")},
     {0, XF86XK_MonBrightnessDown,     spawn, SHCMD("brightnessctl set 1%-")},
     /* screenshot binds */
     {MODKEY | ShiftMask,               XK_s,  spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/images-photos-wallpapers/screenshot-minimal.sh", NULL}}}, // SCREENSHOT
     {MODKEY | ControlMask,             XK_s,  spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/images-photos-wallpapers/screenshot.sh", NULL}}}, // SPECIFIC SCREENSHOT
-    {MODKEY | ControlMask | ShiftMask, XK_s,  spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/images-photos-wallpapers/screenshot.sh", "color", NULL}}}, //COLOR PICKER
 };
 
 /* button definitions */
