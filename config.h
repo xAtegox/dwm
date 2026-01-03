@@ -56,14 +56,15 @@ static const Rule rules[] = {
      */
      /* class     instance  title           tags mask  isfloating  isterminal
         noswallow  monitor */
-     {"neofetch", NULL, "Welcome",   0, 1, 1, 0, -1},     /* neofetch startup window (must be before general St rule) */
-     {"st-256color", NULL, NULL,        0, 0, 1, 0, -1},
+    {"neofetch", NULL, "Welcome",   0, 1, 1, 0, -1},     /* neofetch startup window (must be before general St rule) */
+    {"st-256color", NULL, NULL,        0, 0, 1, 0, -1},
     {"fzfmenu",NULL, NULL,        0, 1, 1, 1, -1},     /* fzf menu (any title) */
     {"mpv",    NULL, NULL,        0, 1, 0, 1, -1},     /* mpv video player */
     {"Nsxiv",  NULL, NULL,        0, 1, 0, 1, -1},     /* nsxiv image preview */
     {NULL,      NULL, "Event Tester", 0, 0, 0, 1, -1}, /* xev */
-    { "floating_calc", NULL,      NULL,       0,            1,           -1 },
-    { "musicwiki",    "musicwiki",  NULL,       0,            1,           -1 },
+    {"floating_calc", NULL,      NULL,       0,            1,           -1 },
+    {"musicwiki",    "musicwiki",  NULL,       0,            1,           -1 },
+    {"floating_script",  NULL,       NULL,       0,            1,           -1 },
 };
 
 #include "vanitygaps.c"
@@ -222,12 +223,9 @@ static const Key keys[] = {
     {MODKEY | ShiftMask,    XK_d,     spawn, {.v = (const char *[]) {"/bin/bash", "/home/atego/dotfiles/scripts/.config/scripts/app-players/yt-music-tool", NULL}}}, // MUSIC DOWNLOADER
     {MODKEY | ShiftMask,    XK_f,     spawn, {.v = (const char *[]) {"nautilus", NULL}}}, // nautilus
     {MODKEY | ShiftMask,    XK_b,     spawn, {.v = (const char *[]) {"kitty", "-e", "btop", NULL}}}, // STATISTICS SCREEN
-    {MODKEY,                XK_l,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/layout/study.sh", NULL}}}, // Study LAYOUT
-    {MODKEY | ShiftMask,    XK_l,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/layout/chill.sh", NULL}}}, // Chill LAYOUT
-    {MODKEY | ControlMask,  XK_l,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/layout/music.sh", NULL}}}, // Music LAYOUT
-    {MODKEY,                XK_c,     spawn, {.v = (const char *[]) {"kitty", "--class", "floating_calc", "--title", "Calculator", "--override", "initial_window_width=800", "--override", "initial_window_height=450", "-e", "/home/atego/dotfiles/scripts/.config/scripts/app-players/calculator.py", NULL}}}, // CALCULATOR
-    {MODKEY | ControlMask | ShiftMask, XK_c, spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/audio-video/selective-webm-convertion", NULL}}}, // CONVERT VIDEOS TO LOW QUALITY WEBM
-    {MODKEY | ControlMask,  XK_c,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cal-check", NULL}}}, // MANUALY CHECK CALLENDAR FOR TODAY AND TMRW
+    {MODKEY | ControlMask | ShiftMask, XK_c, spawn, {.v = (const char *[]) {"kitty", "--class", "floating_calc", "--title", "Calculator", "--override", "initial_window_width=800", "--override", "initial_window_height=450", "-e", "/home/atego/dotfiles/scripts/.config/scripts/app-players/calculator.py", NULL}}}, // CALCULATOR
+    {MODKEY | ControlMask,  XK_c,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/audio-video/selective-webm-convertion", NULL}}}, // CONVERT VIDEOS TO LOW QUALITY WEBM
+    {MODKEY,                XK_c,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cal-check", NULL}}}, // MANUALY CHECK CALLENDAR FOR TODAY AND TMRW
     {MODKEY | ShiftMask,    XK_c,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cheat.sh", NULL}}}, // COMAND CHEAT SHEET
     {MODKEY,                XK_n,     spawn, {.v = (const char *[]) {"kitty", "-e", "nvim", NULL}}}, // NVIM
     {MODKEY | ShiftMask,    XK_n,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/notes.sh", NULL}}}, // NOTES
@@ -242,6 +240,15 @@ static const Key keys[] = {
     {0, XF86XK_AudioLowerVolume,      spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%; pkill -RTMIN+10 dwmblocks")},
     {0, XF86XK_AudioRaiseVolume,      spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5%; pkill -RTMIN+10 dwmblocks")},
     {0, XF86XK_AudioMicMute,          spawn, SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle; pkill -RTMIN+10 dwmblocks")},
+    /* Extra F11 etc. keys */
+    {0, XF86XK_Tools,                 spawn, SHCMD("kitty -e rmpc") },
+    {0, XF86XK_AudioStop,             spawn, SHCMD("mpc stop; pkill -RTMIN+11 dwmblocks") },
+    {0, XF86XK_AudioPrev,             spawn, SHCMD("mpc prev; pkill -RTMIN+11 dwmblocks") },
+    {0, XF86XK_AudioPlay,             spawn, SHCMD("mpc toggle; pkill -RTMIN+11 dwmblocks") },
+    {0, XF86XK_AudioNext,             spawn, SHCMD("mpc next; pkill -RTMIN+11 dwmblocks") },
+    {0, XF86XK_Mail,                  spawn, SHCMD("helium-browser https://mail.google.com") },
+    {0, XF86XK_HomePage,              spawn, SHCMD("kitty --class floating_script --title Powermenu --override initial_window_width=600 --override initial_window_height=400 -e /home/atego/dotfiles/scripts/.config/scripts/system/powermenu") },
+    {0, XF86XK_Calculator,            spawn, {.v = (const char *[]) {"kitty", "--class", "floating_calc", "--title", "Calculator", "--override", "initial_window_width=800", "--override", "initial_window_height=450", "-e", "/home/atego/dotfiles/scripts/.config/scripts/app-players/calculator.py", NULL } } },
     /* brightness keys */
     {0, XF86XK_MonBrightnessUp,       spawn, SHCMD("brightnessctl set +1%")},
     {0, XF86XK_MonBrightnessDown,     spawn, SHCMD("brightnessctl set 1%-")},
