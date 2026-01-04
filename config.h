@@ -223,7 +223,6 @@ static const Key keys[] = {
     {MODKEY | ShiftMask,    XK_d,     spawn, {.v = (const char *[]) {"/bin/bash", "/home/atego/dotfiles/scripts/.config/scripts/app-players/yt-music-tool", NULL}}}, // MUSIC DOWNLOADER
     {MODKEY | ShiftMask,    XK_f,     spawn, {.v = (const char *[]) {"nautilus", NULL}}}, // nautilus
     {MODKEY | ShiftMask,    XK_b,     spawn, {.v = (const char *[]) {"kitty", "-e", "btop", NULL}}}, // STATISTICS SCREEN
-    {MODKEY | ControlMask | ShiftMask, XK_c, spawn, {.v = (const char *[]) {"kitty", "--class", "floating_calc", "--title", "Calculator", "--override", "initial_window_width=800", "--override", "initial_window_height=450", "-e", "/home/atego/dotfiles/scripts/.config/scripts/app-players/calculator.py", NULL}}}, // CALCULATOR
     {MODKEY | ControlMask,  XK_c,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/audio-video/selective-webm-convertion", NULL}}}, // CONVERT VIDEOS TO LOW QUALITY WEBM
     {MODKEY,                XK_c,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cal-check", NULL}}}, // MANUALY CHECK CALLENDAR FOR TODAY AND TMRW
     {MODKEY | ShiftMask,    XK_c,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cheat.sh", NULL}}}, // COMAND CHEAT SHEET
@@ -235,6 +234,8 @@ static const Key keys[] = {
     {MODKEY | ShiftMask,    XK_r,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/audio-video/screenrecord", "toggle", NULL}}}, // SCREEN RECORD
     {MODKEY,                XK_s,     spawn, {.v = (const char *[]) {"steam", NULL}}}, // STEAM
     {MODKEY | ShiftMask,    XK_w,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/images-photos-wallpapers/wal-picker.sh", NULL}}}, // WALLPAPER PICKER
+    {MODKEY,                XK_w,     spawn, {.v = (const char *[]) {"onlyoffice-desktopeditors", NULL}}}, // MS OFFICE
+    {MODKEY | ControlMask | ShiftMask, XK_c, spawn, {.v = (const char *[]) {"/opt/snapchat-nativefier/Snapchat", "--no-sandbox", NULL}}}, // SNAP
     /* ThinkPad media keys (F1-F4): F1=mute, F2=vol-, F3=vol+, F4=mic-mute */
     {0, XF86XK_AudioMute,             spawn, SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle; pkill -RTMIN+10 dwmblocks")},
     {0, XF86XK_AudioLowerVolume,      spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%; pkill -RTMIN+10 dwmblocks")},
