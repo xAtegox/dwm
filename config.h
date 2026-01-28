@@ -18,10 +18,10 @@ static const int showlayout = 1;   /* 0 means no layout indicator */
 static const int showstatus = 1;   /* 0 means no status bar */
 static const int showfloating = 0; /* 0 means no floating indicator */
 static int topbar = 1;             /* 0 means bottom bar */
-static char dmenufont[] = "Iosevka Nerd Font:size=11";
+static char dmenufont[] = "Iosevka Nerd Font:size=12";
 static const char *fonts[] = {
-    "Iosevka Nerd Font:size=11",
-    "NotoColorEmoji:pixelsize=11:antialias=true:autohint=true"
+    "Iosevka Nerd Font:size=12",
+    "NotoColorEmoji:pixelsize=12:antialias=true:autohint=true"
 };
 
 /* default colors used if xrdb is not loaded */
@@ -68,6 +68,8 @@ static const Rule rules[] = {
     { "dwm-calendar", NULL,       NULL,       0,            1,           -1 },
     { "dwm-calendar", NULL,       NULL,       0,            1,           -1 },
     { "calendar", "calendar", "calendar", 0,            1,           -1 },
+    {"haiku_window", NULL, NULL, 0 , 1, 1, 0, -1 },
+    {"st-256color", NULL, "music-player", 0, 1, -1 },
 };
 
 #include "vanitygaps.c"
@@ -114,13 +116,7 @@ static const Layout layouts[] = {
                         { MOD, XK_a,     ACTION##stack, {.i = 1 } },           \
                         { MOD, XK_z,     ACTION##stack, {.i = 2 } },           \
                         { MOD, XK_x,     ACTION##stack, {.i = -1 } }, */
-//* helper for spawning shell commands in the pre dwm-5.0 fashion */
-//
-//#define SHCMD(cmd)                                                             \
-//  {                                                                            \
-//    .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
-//  }
-//* helper for launching gtk application */
+
 
 #define GTKCMD(cmd)                                                            \
   {                                                                            \
@@ -214,15 +210,14 @@ static const Key keys[] = {
     //{MODKEY | ControlMask,  XK_t,     togglebartags,   {0}},  // NEVER UNCOMENT CRUCIAL FOR NAVIGATION
     {MODKEY | ControlMask,  XK_e,     togglebarcolor,  {0}}, /* swaps fg/bg */
     //{MODKEY | ControlMask,  XK_r,     togglebarlt,     {0}},  // NEVER UNCOMENT CRUCIAL LOOKS!
-    {MODKEY | ControlMask,  XK_f,     togglebarfloat,  {0}},
-    /* application bindings */
-    {MODKEY | ShiftMask,    XK_m,     spawn, {.v = (const char *[]) {"kitty", "-e", "nmtui", NULL}}}, // NETWORK MANAGER
+    //{MODKEY | ControlMask,  XK_f,     togglebarfloat,  {0}},
+    /* application bindings */ 
     {MODKEY,                XK_m,     spawn, {.v = (const char *[]) {"kitty", "-e", "rmpc", NULL}}}, // MUSIC PLAYER
     {MODKEY | ControlMask,  XK_m,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/app-players/movplayer", NULL}}}, // MOVIE PLAYER
     {MODKEY | ControlMask | ShiftMask, XK_m, spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/app-players/movie-installer", NULL}}}, // MOVIE INSTALLER
     {MODKEY,                XK_a,     spawn, {.v = (const char *[]) {"kitty", "-e", "sh", "-c", "ani-cli --dub --skip", NULL}}}, // ANIME PLAYER
     {MODKEY,                XK_b,     spawn, {.v = (const char *[]) {BROWSER, NULL}}}, // BROWSER
-    {MODKEY,                XK_d,     spawn, {.v = (const char *[]) {CHATCLIENT, NULL}}}, // DISCORD
+    {MODKEY,                XK_d,     spawn, {.v = (const char *[]) {CHATCLIENT, "--skip-host-update", NULL}}}, // DISCORD
     {MODKEY | ShiftMask,    XK_d,     spawn, {.v = (const char *[]) {"/bin/bash", "/home/atego/dotfiles/scripts/.config/scripts/app-players/yt-music-tool", NULL}}}, // MUSIC DOWNLOADER
     {MODKEY | ShiftMask,    XK_f,     spawn, {.v = (const char *[]) {"nautilus", NULL}}}, // nautilus
     {MODKEY | ShiftMask,    XK_b,     spawn, {.v = (const char *[]) {"kitty", "-e", "btop", NULL}}}, // STATISTICS SCREEN
@@ -231,16 +226,17 @@ static const Key keys[] = {
     {MODKEY | ShiftMask,    XK_c,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/cheat.sh", NULL}}}, // COMAND CHEAT SHEET
     {MODKEY,                XK_n,     spawn, {.v = (const char *[]) {"kitty", "-e", "nvim", NULL}}}, // NVIM
     {MODKEY | ShiftMask,    XK_n,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/custom-helpers/notes.sh", NULL}}}, // NOTES
-    {MODKEY,                XK_e,     spawn, {.v = (const char *[]) {"emacs", NULL}}}, // EMACS
+    {MODKEY,                XK_e,     spawn, {.v = (const char *[]) {"kitty", "-e", "yazi", NULL}}}, // YAZI
     {MODKEY,                XK_y,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/app-players/ytplay-launcher", NULL}}},  // YOUTUBE PLAYER
     {MODKEY | ControlMask,  XK_a,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/audio-video/audiorecording", "toggle", NULL}}}, // AUDIO RECORDER
     {MODKEY | ShiftMask,    XK_r,     spawn, {.v = (const char *[]) {"/home/atego/dotfiles/scripts/.config/scripts/audio-video/screenrecord", "toggle", NULL}}}, // SCREEN RECORD
-    {MODKEY,                XK_s,     spawn, {.v = (const char *[]) {"curseforge", NULL}}}, // CURSEFORGE
+    {MODKEY,                XK_s,     spawn, {.v = (const char *[]) {"steam", NULL}}}, // STEAM
     {MODKEY | ShiftMask,    XK_w,     spawn, {.v = (const char *[]) {"kitty", "-e", "/home/atego/dotfiles/scripts/.config/scripts/images-photos-wallpapers/wal-picker.sh", NULL}}}, // WALLPAPER PICKER
     {MODKEY,                XK_w,     spawn, {.v = (const char *[]) {"onlyoffice-desktopeditors", NULL}}}, // MS OFFICE
     {MODKEY | ControlMask | ShiftMask, XK_c, spawn, {.v = (const char *[]) {"/opt/snapchat-nativefier/Snapchat", "--no-sandbox", NULL}}}, // SNAP
-    {MODKEY,                XK_f,     spawn, {.v = (const char *[]) {"kitty", "-e", "yazi", NULL}}}, // YAZI
     {MODKEY,                XK_z,     spawn, {.v = (const char *[]) {"zeditor", NULL}}}, // ZED EDITOR
+    {MODKEY | ShiftMask,    XK_m,     spawn, {.v = (const char *[]) {"prismlauncher", NULL}}}, // PRISMLAUNCHER
+    {MODKEY,                XK_r,     spawn, {.v = (const char *[]) {"audacious", NULL}}}, // RADIO
     /* ThinkPad media keys (F1-F4): F1=mute, F2=vol-, F3=vol+, F4=mic-mute */
     {0, XF86XK_AudioMute,             spawn, SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle; pkill -RTMIN+10 dwmblocks")},
     {0, XF86XK_AudioLowerVolume,      spawn, SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%; pkill -RTMIN+10 dwmblocks")},
